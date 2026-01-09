@@ -3,22 +3,15 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\KonsultasiController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-*/
-
 Route::get('/', function () {
     return view('welcome');
 });
 
-/*
-|--------------------------------------------------------------------------
-| User Side - Konsultasi (Tanpa Login)
-|--------------------------------------------------------------------------
-*/
+Route::get('/konsultasi', [KonsultasiController::class, 'index'])
+    ->name('konsultasi.index');
 
-Route::get('/konsultasi', [KonsultasiController::class, 'index']);
-Route::post('/konsultasi', [KonsultasiController::class, 'proses']);
-Route::get('/hasil/{id}', [KonsultasiController::class, 'hasil']);
+Route::post('/konsultasi', [KonsultasiController::class, 'store'])
+    ->name('konsultasi.store');
+
+Route::get('/hasil/{id}', [KonsultasiController::class, 'hasil'])
+    ->name('konsultasi.hasil');

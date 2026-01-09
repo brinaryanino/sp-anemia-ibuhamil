@@ -16,15 +16,23 @@ class SaranAwalsTable
             ->columns([
                 Tables\Columns\TextColumn::make('kondisi.nama_kondisi')
                     ->label('Kondisi')
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
 
                 Tables\Columns\TextColumn::make('trimester')
                     ->label('Trimester')
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(),
 
                 Tables\Columns\TextColumn::make('fokus')
                     ->label('Fokus Saran')
-                    ->wrap(),
+                    ->wrap()
+                    ->searchable(),
+
+                Tables\Columns\TextColumn::make('deskripsi_saran')
+                    ->label('Deskripsi Saran')
+                    ->wrap()
+                    ->searchable(),
             ])
             ->filters([
                 // belum diperlukan

@@ -26,7 +26,9 @@ class BasisPengetahuansTable
 
                 Tables\Columns\TextColumn::make('kondisi.nama_kondisi')
                     ->label('Kondisi')
-                    ->sortable(),
+                    ->wrap()
+                    ->sortable()
+                    ->searchable(),
 
                 Tables\Columns\TextColumn::make('cf_pakar')
                     ->label('CF Pakar')
