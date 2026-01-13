@@ -8,7 +8,7 @@
     {{-- Header --}}
     <div class="bg-gradient-to-r from-pink-400 to-rose-500 p-6 text-center">
         <h2 class="text-2xl font-bold text-white tracking-wide">
-            Deteksi Dini Anemia
+            Deteksi Dini Anemia pada Ibu Hamil
         </h2>
         <p class="text-pink-100 text-sm mt-1">
             Jaga kesehatan Ibu dan Buah Hati
@@ -48,7 +48,7 @@
             </strong>
 
             <p class="text-xs text-gray-500 mb-4">
-                Pilih semua yang sesuai dengan kondisi Anda saat ini.
+                Pilih gejala yang sesuai dengan kondisi Anda saat ini.
             </p>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">

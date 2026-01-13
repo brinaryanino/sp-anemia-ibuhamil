@@ -12,6 +12,7 @@ use App\Models\KonsultasiGejala;
 use App\Models\Kondisi;
 use App\Models\SaranAwal;
 use App\Models\User;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class KonsultasiController extends Controller
 {
@@ -60,7 +61,7 @@ class KonsultasiController extends Controller
             | 3. AMBIL GEJALA YANG DIPILIH USER
             |-------------------------------------------------------------
             */
-            $gejalaTerpilih = $request->gejala; // array ID gejala
+            $gejalaTerpilih = $request->gejala;
 
             /*
             |-------------------------------------------------------------
@@ -75,14 +76,12 @@ class KonsultasiController extends Controller
             /*
             |-------------------------------------------------------------
             | 5. HITUNG CERTAINTY FACTOR PER KONDISI
-            |   Rumus CF Combine:
-            |   CFcombine = CF1 + CF2 * (1 - CF1)
             |-------------------------------------------------------------
             */
             $cfPerKondisi = [];
 
             foreach ($basisPengetahuan as $bp) {
-                $cfRule = $bp->cf_pakar; // CF user diasumsikan 1
+                $cfRule = $bp->cf_pakar;
 
                 if (!isset($cfPerKondisi[$bp->kondisi_id])) {
                     $cfPerKondisi[$bp->kondisi_id] = $cfRule;
@@ -99,12 +98,11 @@ class KonsultasiController extends Controller
             |-------------------------------------------------------------
             */
             if (!empty($cfPerKondisi)) {
-                arsort($cfPerKondisi); // urutkan dari CF terbesar
+                arsort($cfPerKondisi);
                 $hasilKondisiId = array_key_first($cfPerKondisi);
                 $nilaiCF = $cfPerKondisi[$hasilKondisiId];
             } else {
-                // fallback jika tidak ada rule yang cocok
-                $hasilKondisiId = 1; // ID "Tidak Anemia"
+                $hasilKondisiId = 1;
                 $nilaiCF = 0;
             }
 
@@ -122,7 +120,7 @@ class KonsultasiController extends Controller
 
             /*
             |-------------------------------------------------------------
-            | 8. SIMPAN DETAIL GEJALA YANG DIPILIH (PIVOT)
+            | 8. SIMPAN DETAIL GEJALA (PIVOT)
             |-------------------------------------------------------------
             */
             foreach ($gejalaTerpilih as $gejalaId) {
@@ -150,7 +148,29 @@ class KonsultasiController extends Controller
      */
     public function hasil($id)
     {
-        $konsultasi = Konsultasi::with('kondisi')->findOrFail($id);
+        $konsultasi = Konsultasi::with([
+            'kondisi',
+            'gejalas'
+        ])->findOrFail($id);
+
         return view('konsultasi.hasil', compact('konsultasi'));
+    }
+
+    /**
+     * EXPORT HASIL KONSULTASI KE PDF
+     */
+    public function exportPdf($id)
+    {
+        $konsultasi = Konsultasi::with([
+            'kondisi',
+            'gejalas'
+        ])->findOrFail($id);
+
+        $pdf = Pdf::loadView('konsultasi.pdf', compact('konsultasi'))
+            ->setPaper('A4', 'portrait');
+
+        return $pdf->download(
+            'hasil-konsultasi-' . $konsultasi->id . '.pdf'
+        );
     }
 }

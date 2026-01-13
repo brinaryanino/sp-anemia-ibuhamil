@@ -22,6 +22,6 @@ class Konsultasi extends Model
 
     public function gejalas()
     {
-        return $this->belongsToMany(Gejala::class, 'konsultasi_gejala');
+        return $this->belongsToMany(Gejala::class, 'konsultasi_gejalas');
     }
 }

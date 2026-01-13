@@ -70,6 +70,25 @@
             </div>
         @endif
 
+        {{-- Gejala yang Dipilih --}}
+@if ($konsultasi->gejalas && $konsultasi->gejalas->count() > 0)
+    <div class="mt-6 p-5 rounded-xl bg-slate-50 border border-slate-200">
+        <h3 class="text-lg font-bold text-slate-700 mb-3">
+            Gejala yang Dipilih
+        </h3>
+
+        <ul class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-sm text-slate-700">
+            @foreach ($konsultasi->gejalas as $gejala)
+                <li class="flex items-start gap-2">
+                    <span class="text-rose-500 mt-1">•</span>
+                    <span>{{ $gejala->nama_gejala }}</span>
+                </li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
+
         {{-- Disclaimer --}}
         <div class="mt-6 p-4 rounded-lg bg-yellow-50 border border-yellow-200 text-sm text-yellow-700">
             <strong>Catatan:</strong>
@@ -79,13 +98,21 @@
         </div>
 
         {{-- Action --}}
-        <div class="pt-6 flex justify-center">
-            <a href="{{ route('konsultasi.index') }}"
-               class="inline-block bg-gray-100 hover:bg-gray-200 text-gray-700
-                      font-semibold px-6 py-3 rounded-lg transition">
-                Kembali ke Form Deteksi
-            </a>
-        </div>
+<div class="pt-6 flex justify-center gap-4">
+    <a href="{{ route('konsultasi.index') }}"
+       class="inline-block bg-gray-100 hover:bg-gray-200 text-gray-700
+              font-semibold px-6 py-3 rounded-lg transition">
+        Kembali ke Form Deteksi
+    </a>
+
+    {{-- Tombol Export PDF --}}
+    <a href="{{ route('konsultasi.export.pdf', $konsultasi->id) }}"
+       class="inline-block bg-red-600 hover:bg-red-700 text-white
+              font-semibold px-6 py-3 rounded-lg transition">
+        Export PDF
+    </a>
+</div>
+
     </div>
 </div>
 @endsection
